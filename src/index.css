@@ -1,0 +1,111 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
+:root {
+  /* Colors - Light Theme (Zeytra style) */
+  --bg-color: #f6f8f3;
+  --bg-card: #ffffff;
+  --bg-sidebar: #f6f8f3;
+  --text-primary: #171a1f;
+  --text-secondary: #6b7280;
+  --text-inverse: #ffffff;
+  
+  --accent: #c4ed46;       /* Neon lime green */
+  --accent-hover: #b2d93e;
+  --accent-text: #171a1f;
+  
+  --success: #10b981;
+  --danger: #ef4444;
+  --border-color: #e5e7eb;
+  
+  /* Aura Dark Card Background */
+  --bg-dark-promo: #0a0a0a;
+  
+  /* Shadows & Radius - Softer, larger */
+  --card-shadow: 0 4px 20px -5px rgb(0 0 0 / 0.05);
+  --modal-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.15);
+  --radius-sm: 0.5rem;
+  --radius-md: 1rem;
+  --radius-lg: 1.5rem;
+  --radius-full: 9999px;
+
+  /* Typography */
+  --font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+  
+  /* Transitions */
+  --transition-fast: 150ms ease-in-out;
+  --transition-normal: 250ms ease-in-out;
+}
+
+[data-theme='dark'] {
+  /* Colors - Dark Theme */
+  --bg-color: #050505;
+  --bg-card: #121212;
+  --bg-sidebar: #050505;
+  --text-primary: #f3f4f6;
+  --text-secondary: #9ca3af;
+  --text-inverse: #050505;
+  
+  --accent: #c4ed46;       /* Keeps the neon pop */
+  --accent-hover: #d2f268;
+  --border-color: #27272a;
+  
+  --card-shadow: 0 4px 20px -5px rgb(0 0 0 / 0.3);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-family);
+  background-color: var(--bg-color);
+  color: var(--text-primary);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  transition: background-color var(--transition-normal), color var(--transition-normal);
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  background: none;
+  outline: none;
+}
+
+input {
+  font-family: inherit;
+  outline: none;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* Glassmorphism utility */
+.glass {
+  background: rgba(var(--bg-card), 0.7);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes flashUp {
+  0% { color: var(--success); text-shadow: 0 0 8px rgba(16, 185, 129, 0.5); }
+  100% { color: var(--text-primary); text-shadow: none; }
+}
+
+@keyframes flashDown {
+  0% { color: var(--danger); text-shadow: 0 0 8px rgba(239, 68, 68, 0.5); }
+  100% { color: var(--text-primary); text-shadow: none; }
+}
+
+.flash-up { animation: flashUp 1s ease-out; }
+.flash-down { animation: flashDown 1s ease-out; }
