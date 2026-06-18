@@ -11,17 +11,10 @@ interface AssetCardProps {
   onClick: (coin: Coin) => void;
 }
 
-export const AssetCard: React.FC<AssetCardProps> = memo(({ coin, onClick }) => {
-  const { isInWatchlist, toggleWatchlist } = useWatchlist();
-  const { price: livePrice, direction } = useLivePrice(coin.symbol, coin.current_price);
+const LivePriceText: React.FC<{ symbol: string; initialPrice: number }> = memo(({ symbol, initialPrice }) => {
+  const { price, direction } = useLivePrice(symbol, initialPrice);
+  const flashClass = direction === 'up' ? 'flash-up' : direction === 'down' ? 'flash-down' : '';
   
-  const isStarred = isInWatchlist(coin.id);
-  const isPositive = coin.price_change_percentage_24h >= 0;
-  const chartColor = isPositive ? 'var(--success)' : 'var(--danger)';
-  
-  // Recharts needs an array of objects
-  const chartData = coin.sparkline_in_7d?.price.map((p, index) => ({ value: p, index })) || [];
-
   const formatCurrency = (value: number) => {
     return new Intl.NumberFormat('en-US', {
       style: 'currency',
@@ -31,7 +24,18 @@ export const AssetCard: React.FC<AssetCardProps> = memo(({ coin, onClick }) => {
     }).format(value);
   };
 
-  const flashClass = direction === 'up' ? 'flash-up' : direction === 'down' ? 'flash-down' : '';
+  return <span className={`${styles.price} ${flashClass}`}>{formatCurrency(price)}</span>;
+});
+
+export const AssetCard: React.FC<AssetCardProps> = memo(({ coin, onClick }) => {
+  const { isInWatchlist, toggleWatchlist } = useWatchlist();
+  
+  const isStarred = isInWatchlist(coin.id);
+  const isPositive = coin.price_change_percentage_24h >= 0;
+  const chartColor = isPositive ? 'var(--success)' : 'var(--danger)';
+  
+  // Recharts needs an array of objects
+  const chartData = coin.sparkline_in_7d?.price.map((p, index) => ({ value: p, index })) || [];
 
   return (
     <div className={styles.card} onClick={() => onClick(coin)}>
@@ -57,7 +61,7 @@ export const AssetCard: React.FC<AssetCardProps> = memo(({ coin, onClick }) => {
       
       <div className={styles.middleSection}>
         <div className={styles.priceArea}>
-          <span className={`${styles.price} ${flashClass}`}>{formatCurrency(livePrice)}</span>
+          <LivePriceText symbol={coin.symbol} initialPrice={coin.current_price} />
           <div className={`${styles.change} ${isPositive ? styles.positive : styles.negative}`}>
             {isPositive ? <TrendingUp size={16} /> : <TrendingDown size={16} />}
             <span>{Math.abs(coin.price_change_percentage_24h).toFixed(2)}%</span>

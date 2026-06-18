@@ -21,6 +21,11 @@ export const Dashboard: React.FC<DashboardProps> = ({ activeView, onNavigate }) 
   const [selectedCoin, setSelectedCoin] = useState<Coin | null>(null);
   const [marketFilter, setMarketFilter] = useState<number>(100);
 
+  // Memoize sorted coins for the markets view
+  const sortedMarkets = useMemo(() => {
+    return [...coins].sort((a,b) => b.price_change_percentage_24h - a.price_change_percentage_24h);
+  }, [coins]);
+
   const topGainer = useMemo(() => {
     if (coins.length === 0) return null;
     return [...coins].sort((a, b) => b.price_change_percentage_24h - a.price_change_percentage_24h)[0];
@@ -88,8 +93,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ activeView, onNavigate }) 
   }
 
   if (activeView === 'markets') {
-    const sortedCoins = [...coins].sort((a,b) => b.price_change_percentage_24h - a.price_change_percentage_24h);
-    const displayedCoins = sortedCoins.slice(0, marketFilter);
+    const displayedCoins = sortedMarkets.slice(0, marketFilter);
 
     return (
       <div style={{ marginTop: '1rem' }}>
