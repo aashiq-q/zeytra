@@ -10,6 +10,20 @@ interface AssetModalProps {
   onClose: () => void;
 }
 
+// Custom tooltip for Recharts
+const CustomTooltip = ({ active, payload }: { active?: boolean; payload?: any[] }) => {
+  if (active && payload && payload.length) {
+    return (
+      <div className={styles.tooltip}>
+        <div className={styles.tooltipPrice}>
+          ${payload[0].value.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 6 })}
+        </div>
+      </div>
+    );
+  }
+  return null;
+};
+
 export const AssetModal: React.FC<AssetModalProps> = ({ coin, onClose }) => {
   useEffect(() => {
     if (coin) {

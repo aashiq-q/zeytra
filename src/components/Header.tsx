@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Search, Moon, Sun, Bell, Globe, RefreshCw } from 'lucide-react';
+import { Search, Moon, Sun, RefreshCw } from 'lucide-react';
 import { useTheme } from '../contexts/ThemeContext';
 import { useMarketData } from '../contexts/MarketContext';
 import { useToast } from '../contexts/ToastContext';

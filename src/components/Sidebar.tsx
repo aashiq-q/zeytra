@@ -1,6 +1,5 @@
 import React from 'react';
-import { LayoutDashboard, Globe, Star, TrendingUp, BarChart2, Settings, HelpCircle, LogOut } from 'lucide-react';
-import { useToast } from '../contexts/ToastContext';
+import { LayoutDashboard, Star, Globe, TrendingUp } from 'lucide-react';
 import { useMarketData } from '../contexts/MarketContext';
 import type { ViewState } from '../App';
 import styles from './Sidebar.module.css';
@@ -11,7 +10,6 @@ interface SidebarProps {
 }
 
 export const Sidebar: React.FC<SidebarProps> = ({ activeView, onNavigate }) => {
-  const { showToast } = useToast();
   const { setSearchQuery } = useMarketData();
 
   const handleNav = (view: ViewState) => {

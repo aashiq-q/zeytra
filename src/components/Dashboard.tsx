@@ -4,7 +4,6 @@ import { useMarketData } from '../contexts/MarketContext';
 import { useWatchlist } from '../contexts/WatchlistContext';
 import { AssetCard } from './AssetCard';
 import { AssetModal } from './AssetModal';
-import { SwapModal } from './SwapModal';
 import type { Coin } from '../services/api';
 import type { ViewState } from '../App';
 import { BarChart, Bar, ResponsiveContainer, XAxis, Tooltip, Cell, PieChart, Pie } from 'recharts';
@@ -19,7 +18,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ activeView, onNavigate }) 
   const { coins, globalData, loading, searchQuery } = useMarketData();
   const { watchlist } = useWatchlist();
   const [selectedCoin, setSelectedCoin] = useState<Coin | null>(null);
-  const [marketFilter, setMarketFilter] = useState<number>(100);
+  const [marketFilter, setMarketFilter] = useState<number>(10);
 
   // Memoize sorted coins for the markets view
   const sortedMarkets = useMemo(() => {
