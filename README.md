@@ -1,5 +1,7 @@
 # Zeytra | Crypto Market Pulse
 
+**Live Demo:** [https://zeytra.vercel.app](https://zeytra.vercel.app)
+
 ![Zeytra Dashboard Preview](./public/dashboard-preview.png)
 
 A high-performance cryptocurrency dashboard designed to track top markets, visualize real-time data, and manage a persistent user watchlist.
