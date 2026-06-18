@@ -1,0 +1,214 @@
+.dashboardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.titleArea h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1.2;
+}
+
+.titleArea p {
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+}
+
+.primaryButton {
+  background-color: var(--accent);
+  color: var(--accent-text);
+  padding: 0.75rem 1.5rem;
+  border-radius: var(--radius-full);
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  box-shadow: 0 4px 10px rgba(196, 237, 70, 0.3);
+  transition: transform var(--transition-fast);
+}
+.primaryButton:hover {
+  transform: translateY(-2px);
+}
+
+.bentoGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.card {
+  background-color: var(--bg-card);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+  box-shadow: var(--card-shadow);
+  border: 1px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+}
+
+.cardGreen {
+  background-color: var(--accent);
+  color: var(--accent-text);
+  border: none;
+  box-shadow: 0 10px 20px rgba(196, 237, 70, 0.2);
+}
+
+.kpiTitle {
+  font-size: 0.875rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.kpiIcon {
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: var(--radius-full);
+  border: 1px solid currentColor;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.kpiValue {
+  font-size: 2.25rem;
+  font-weight: 800;
+  margin-bottom: 0.5rem;
+  line-height: 1;
+}
+
+.kpiSubtitle {
+  font-size: 0.75rem;
+  opacity: 0.8;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.middleRow {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.chartCard {
+  min-height: 320px;
+}
+
+.bottomRow {
+  display: grid;
+  grid-template-columns: 1fr 1.5fr 1fr;
+  gap: 1.5rem;
+}
+
+.listCard ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.listItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.listInfo {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.listAvatar {
+  width: 2rem;
+  height: 2rem;
+  border-radius: var(--radius-full);
+  background: #f3f4f6;
+}
+
+.listName {
+  font-weight: 600;
+  font-size: 0.875rem;
+  color: var(--text-primary);
+}
+
+.listSub {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+}
+
+.listBadge {
+  font-size: 0.7rem;
+  padding: 0.25rem 0.75rem;
+  border-radius: var(--radius-full);
+  background: var(--accent);
+  color: var(--accent-text);
+  font-weight: 600;
+}
+
+.cardTitle {
+  font-size: 1.125rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  color: var(--text-primary);
+}
+
+.donutCenter {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+.donutValue {
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--text-primary);
+}
+
+.donutLabel {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+}
+
+.darkAura {
+  background-color: #0a0a0a;
+  color: white;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 2rem;
+}
+
+.auraGlow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 200px;
+  height: 200px;
+  background: var(--accent);
+  filter: blur(60px);
+  opacity: 0.35;
+  pointer-events: none;
+}
+
+@media (max-width: 1200px) {
+  .bentoGrid { grid-template-columns: repeat(2, 1fr); }
+  .middleRow { grid-template-columns: 1fr; }
+  .bottomRow { grid-template-columns: 1fr; }
+}
