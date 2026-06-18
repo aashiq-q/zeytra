@@ -2,12 +2,14 @@
   min-height: 100vh;
   display: grid;
   grid-template-columns: auto 1fr;
+  overflow-x: hidden;
 }
 
 main {
   flex: 1;
   padding: 1.5rem 2.5rem;
   overflow-y: auto;
+  overflow-x: hidden;
   max-height: 100vh;
   display: flex;
   flex-direction: column;

@@ -212,3 +212,7 @@
   .middleRow { grid-template-columns: 1fr; }
   .bottomRow { grid-template-columns: 1fr; }
 }
+
+@media (max-width: 768px) {
+  .bentoGrid { grid-template-columns: 1fr; }
+}
