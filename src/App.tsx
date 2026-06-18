@@ -9,7 +9,7 @@ import { Dashboard } from './components/Dashboard';
 import { wsService } from './services/ws';
 import './App.css';
 
-export type ViewState = 'dashboard' | 'watchlist' | 'analytics';
+export type ViewState = 'dashboard' | 'markets' | 'watchlist';
 
 function App() {
   const [activeView, setActiveView] = React.useState<ViewState>('dashboard');
@@ -27,7 +27,7 @@ function App() {
               <Sidebar activeView={activeView} onNavigate={setActiveView} />
               <main>
                 <Header />
-                <Dashboard activeView={activeView} />
+                <Dashboard activeView={activeView} onNavigate={setActiveView} />
               </main>
             </div>
           </MarketProvider>

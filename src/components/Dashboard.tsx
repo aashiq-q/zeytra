@@ -12,16 +12,19 @@ import styles from './Dashboard.module.css';
 
 interface DashboardProps {
   activeView: ViewState;
+  onNavigate: (view: ViewState) => void;
 }
 
-export const Dashboard: React.FC<DashboardProps> = ({ activeView }) => {
+export const Dashboard: React.FC<DashboardProps> = ({ activeView, onNavigate }) => {
   const { coins, globalData, loading, searchQuery } = useMarketData();
   const { watchlist } = useWatchlist();
   const [selectedCoin, setSelectedCoin] = useState<Coin | null>(null);
-  const [showSwapModal, setShowSwapModal] = useState(false);
+  const [marketFilter, setMarketFilter] = useState<number>(100);
 
-  const portfolioBalance = 24500.50;
-  const portfolioChange = 5.2;
+  const topGainer = useMemo(() => {
+    if (coins.length === 0) return null;
+    return [...coins].sort((a, b) => b.price_change_percentage_24h - a.price_change_percentage_24h)[0];
+  }, [coins]);
 
   const formatLarge = (val: number | undefined) => {
     if (!val) return '0';
@@ -84,29 +87,47 @@ export const Dashboard: React.FC<DashboardProps> = ({ activeView }) => {
     );
   }
 
-  if (activeView === 'analytics') {
+  if (activeView === 'markets') {
+    const sortedCoins = [...coins].sort((a,b) => b.price_change_percentage_24h - a.price_change_percentage_24h);
+    const displayedCoins = sortedCoins.slice(0, marketFilter);
+
     return (
       <div style={{ marginTop: '1rem' }}>
-        <h2 className={styles.cardTitle}>Market Analytics Overview</h2>
-        <div className={styles.middleRow}>
-          <div className={`${styles.card} ${styles.chartCard}`}>
-            <div className={styles.cardTitle}>Volume Analytics (Top 7)</div>
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={barChartData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
-                <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: 'var(--text-secondary)' }} dy={10} />
-                <Tooltip cursor={{ fill: 'transparent' }} contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 15px rgba(0,0,0,0.1)' }} />
-                <Bar dataKey="volume" radius={[4, 4, 4, 4]}>
-                  {barChartData.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={index % 2 === 0 ? 'var(--accent)' : 'var(--text-primary)'} />
-                  ))}
-                </Bar>
-              </BarChart>
-            </ResponsiveContainer>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
+          <h2 className={styles.cardTitle} style={{ margin: 0 }}>All Markets</h2>
+          <div style={{ display: 'flex', gap: '0.5rem' }}>
+            <button 
+              onClick={() => setMarketFilter(10)}
+              style={{ padding: '0.4rem 1rem', borderRadius: 'var(--radius-full)', border: 'none', cursor: 'pointer', fontWeight: 600, fontSize: '0.75rem', backgroundColor: marketFilter === 10 ? 'var(--text-primary)' : 'var(--bg-color)', color: marketFilter === 10 ? 'var(--bg-card)' : 'var(--text-secondary)' }}
+            >
+              Top 10
+            </button>
+            <button 
+              onClick={() => setMarketFilter(50)}
+              style={{ padding: '0.4rem 1rem', borderRadius: 'var(--radius-full)', border: 'none', cursor: 'pointer', fontWeight: 600, fontSize: '0.75rem', backgroundColor: marketFilter === 50 ? 'var(--text-primary)' : 'var(--bg-color)', color: marketFilter === 50 ? 'var(--bg-card)' : 'var(--text-secondary)' }}
+            >
+              Top 50
+            </button>
+            <button 
+              onClick={() => setMarketFilter(100)}
+              style={{ padding: '0.4rem 1rem', borderRadius: 'var(--radius-full)', border: 'none', cursor: 'pointer', fontWeight: 600, fontSize: '0.75rem', backgroundColor: marketFilter === 100 ? 'var(--text-primary)' : 'var(--bg-color)', color: marketFilter === 100 ? 'var(--bg-card)' : 'var(--text-secondary)' }}
+            >
+              Top 100
+            </button>
           </div>
         </div>
+        <div className={styles.bentoGrid} style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(250px, 1fr))' }}>
+          {displayedCoins.map(coin => (
+            <AssetCard key={coin.id} coin={coin} onClick={setSelectedCoin} />
+          ))}
+          {displayedCoins.length === 0 && <p style={{color: 'var(--text-secondary)'}}>No coins available.</p>}
+        </div>
+        {selectedCoin && <AssetModal coin={selectedCoin} onClose={() => setSelectedCoin(null)} />}
       </div>
     );
   }
+
+
 
   // DEFAULT DASHBOARD VIEW
   return (
@@ -116,20 +137,19 @@ export const Dashboard: React.FC<DashboardProps> = ({ activeView }) => {
           <h1>Dashboard</h1>
           <p>Track, analyze, and manage your crypto portfolio with ease</p>
         </div>
-        <button className={styles.primaryButton} onClick={() => setShowSwapModal(true)}>
-          Start Trading <ArrowUpRight size={18} />
-        </button>
       </div>
 
       <div className={styles.bentoGrid}>
         <div className={`${styles.card} ${styles.cardGreen}`}>
           <div className={styles.kpiTitle}>
-            <span>Total Portfolio</span>
+            <span>24h Top Gainer</span>
             <div className={styles.kpiIcon}><ArrowUpRight size={14} /></div>
           </div>
-          <div className={styles.kpiValue}>${portfolioBalance.toLocaleString()}</div>
-          <div className={styles.kpiSubtitle}>
-            <ArrowUpRight size={12} /> {portfolioChange}% Increased from last month
+          <div className={styles.kpiValue} style={{ fontSize: '1.5rem' }}>
+            {topGainer?.name} ({topGainer?.symbol.toUpperCase()})
+          </div>
+          <div className={styles.kpiSubtitle} style={{ fontWeight: 600 }}>
+            <ArrowUpRight size={12} /> {topGainer?.price_change_percentage_24h.toFixed(2)}% Increased today
           </div>
         </div>
 
@@ -193,7 +213,12 @@ export const Dashboard: React.FC<DashboardProps> = ({ activeView }) => {
                     <div className={styles.listSub}>{coin.symbol.toUpperCase()}</div>
                   </div>
                 </div>
-                <div className={styles.listBadge}>Tracking</div>
+                <div style={{ textAlign: 'right' }}>
+                  <div style={{ fontWeight: 600 }}>${coin.current_price.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 6 })}</div>
+                  <div style={{ fontSize: '0.75rem', fontWeight: 600, color: coin.price_change_percentage_24h >= 0 ? 'var(--success)' : 'var(--danger)' }}>
+                    {coin.price_change_percentage_24h >= 0 ? '+' : ''}{coin.price_change_percentage_24h.toFixed(2)}%
+                  </div>
+                </div>
               </li>
             ))}
             {watchlist.length === 0 && (
@@ -252,17 +277,16 @@ export const Dashboard: React.FC<DashboardProps> = ({ activeView }) => {
           </div>
         </div>
 
-        <div className={`${styles.card} ${styles.darkAura}`}>
+        <div className={`${styles.card} ${styles.darkAura}`} style={{ cursor: 'pointer' }} onClick={() => onNavigate('markets')}>
           <div className={styles.auraGlow}></div>
-          <h3 style={{ zIndex: 1, fontSize: '1.25rem', marginBottom: '0.5rem' }}>ZEYTRA PRO</h3>
+          <h3 style={{ zIndex: 1, fontSize: '1.25rem', marginBottom: '0.5rem' }}>Explore All Markets</h3>
           <p style={{ zIndex: 1, fontSize: '0.75rem', opacity: 0.8, marginBottom: '1.5rem' }}>
-            Unlock advanced trading analytics and AI-powered insights.
+            Browse the full directory of top cryptocurrencies and discover new assets.
           </p>
-          <button className={styles.primaryButton} onClick={() => setShowSwapModal(true)} style={{ zIndex: 1 }}>Upgrade Now</button>
+          <button className={styles.primaryButton} style={{ zIndex: 1, pointerEvents: 'none' }}>View Markets</button>
         </div>
       </div>
 
-      {showSwapModal && <SwapModal onClose={() => setShowSwapModal(false)} />}
       {selectedCoin && <AssetModal coin={selectedCoin} onClose={() => setSelectedCoin(null)} />}
     </div>
   );
