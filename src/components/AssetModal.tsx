@@ -66,19 +66,7 @@ export const AssetModal: React.FC<AssetModalProps> = ({ coin, onClose }) => {
   const flashClass = direction === 'up' ? 'flash-up' : direction === 'down' ? 'flash-down' : '';
   const chartData = coin.sparkline_in_7d?.price.map((p, i) => ({ value: p, index: i })) || [];
 
-  // Custom tooltip for Recharts
-  const CustomTooltip = ({ active, payload }: any) => {
-    if (active && payload && payload.length) {
-      return (
-        <div style={{ backgroundColor: 'var(--bg-card)', padding: '0.5rem 1rem', border: '1px solid var(--border-color)', borderRadius: '0.5rem', boxShadow: 'var(--card-shadow)' }}>
-          <p style={{ color: 'var(--text-primary)', fontWeight: 'bold' }}>
-            {formatCurrency(payload[0].value, coin.current_price < 1 ? 4 : 2)}
-          </p>
-        </div>
-      );
-    }
-    return null;
-  };
+
 
   return (
     <div className={styles.overlay} onClick={onClose}>

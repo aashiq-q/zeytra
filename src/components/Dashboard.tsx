@@ -211,7 +211,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ activeView, onNavigate }) 
               <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: 'var(--text-secondary)' }} dy={10} />
               <Tooltip cursor={{ fill: 'transparent' }} contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 15px rgba(0,0,0,0.1)' }} />
               <Bar dataKey="volume" radius={[4, 4, 4, 4]}>
-                {barChartData.map((entry, index) => (
+                {barChartData.map((_, index) => (
                   <Cell key={`cell-${index}`} fill={index % 2 === 0 ? 'var(--accent)' : 'var(--text-primary)'} />
                 ))}
               </Bar>
