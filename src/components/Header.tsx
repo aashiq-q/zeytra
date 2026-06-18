@@ -1,11 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { Search, Moon, Sun, RefreshCw } from 'lucide-react';
+import { Search, Moon, Sun, RefreshCw, Menu } from 'lucide-react';
 import { useTheme } from '../contexts/ThemeContext';
 import { useMarketData } from '../contexts/MarketContext';
 import { useToast } from '../contexts/ToastContext';
 import styles from './Header.module.css';
 
-export const Header: React.FC = () => {
+interface HeaderProps {
+  onMenuClick?: () => void;
+}
+
+export const Header: React.FC<HeaderProps> = ({ onMenuClick }) => {
   const { theme, toggleTheme } = useTheme();
   const { searchQuery, setSearchQuery, refreshData } = useMarketData();
   const { showToast } = useToast();
@@ -28,6 +32,9 @@ export const Header: React.FC = () => {
 
   return (
     <header className={styles.header}>
+      <button className={styles.menuButton} onClick={onMenuClick} title="Open Menu">
+        <Menu size={24} />
+      </button>
       <div className={styles.searchContainer}>
         <Search className={styles.searchIcon} size={18} />
         <input

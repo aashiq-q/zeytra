@@ -15,7 +15,7 @@ interface DashboardProps {
 }
 
 export const Dashboard: React.FC<DashboardProps> = ({ activeView, onNavigate }) => {
-  const { coins, globalData, loading, searchQuery } = useMarketData();
+  const { coins, globalData, loading, searchQuery, error, refreshData } = useMarketData();
   const { watchlist } = useWatchlist();
   const [selectedCoin, setSelectedCoin] = useState<Coin | null>(null);
   const [marketFilter, setMarketFilter] = useState<number>(10);
@@ -52,6 +52,21 @@ export const Dashboard: React.FC<DashboardProps> = ({ activeView, onNavigate }) 
       { name: 'Others', value: 100 - globalData.market_cap_percentage.btc - globalData.market_cap_percentage.eth, color: '#e5e7eb' },
     ];
   }, [globalData]);
+
+  if (error && coins.length === 0) {
+    return (
+      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '60vh', textAlign: 'center', gap: '1rem' }}>
+        <h2 style={{ color: 'var(--danger)', fontSize: '1.5rem', fontWeight: 600 }}>API Error</h2>
+        <p style={{ color: 'var(--text-secondary)', maxWidth: '400px' }}>{error}</p>
+        <button 
+          onClick={() => refreshData()} 
+          style={{ background: 'var(--accent)', color: '#000', padding: '0.75rem 1.5rem', borderRadius: 'var(--radius-full)', fontWeight: 600, border: 'none', cursor: 'pointer', marginTop: '1rem' }}
+        >
+          Try Again
+        </button>
+      </div>
+    );
+  }
 
   if (loading && coins.length === 0) return null;
 

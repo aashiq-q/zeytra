@@ -7,22 +7,27 @@ import styles from './Sidebar.module.css';
 interface SidebarProps {
   activeView: ViewState;
   onNavigate: (view: ViewState) => void;
+  isOpen?: boolean;
+  onClose?: () => void;
 }
 
-export const Sidebar: React.FC<SidebarProps> = ({ activeView, onNavigate }) => {
+export const Sidebar: React.FC<SidebarProps> = ({ activeView, onNavigate, isOpen, onClose }) => {
   const { setSearchQuery } = useMarketData();
 
   const handleNav = (view: ViewState) => {
     setSearchQuery('');
     onNavigate(view);
+    if (onClose) onClose();
   };
 
   return (
-    <aside className={styles.sidebar}>
-      <div className={styles.logo}>
-        <TrendingUp className={styles.logoIcon} size={32} />
-        ZEYTRA
-      </div>
+    <>
+      {isOpen && <div className={styles.sidebarOverlay} onClick={onClose} />}
+      <aside className={`${styles.sidebar} ${isOpen ? styles.open : ''}`}>
+        <div className={styles.logo}>
+          <TrendingUp className={styles.logoIcon} size={32} />
+          ZEYTRA
+        </div>
 
       <div className={styles.navGroup}>
         <div className={styles.navTitle}>Menu</div>
@@ -42,5 +47,6 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeView, onNavigate }) => {
         </ul>
       </div>
     </aside>
+    </>
   );
 };

@@ -13,6 +13,7 @@ export type ViewState = 'dashboard' | 'markets' | 'watchlist';
 
 function App() {
   const [activeView, setActiveView] = React.useState<ViewState>('dashboard');
+  const [isSidebarOpen, setIsSidebarOpen] = React.useState(false);
 
   React.useEffect(() => {
     wsService.connect();
@@ -24,9 +25,9 @@ function App() {
         <WatchlistProvider>
           <MarketProvider>
             <div className="app">
-              <Sidebar activeView={activeView} onNavigate={setActiveView} />
+              <Sidebar activeView={activeView} onNavigate={setActiveView} isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
               <main>
-                <Header />
+                <Header onMenuClick={() => setIsSidebarOpen(true)} />
                 <Dashboard activeView={activeView} onNavigate={setActiveView} />
               </main>
             </div>

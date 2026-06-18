@@ -1,5 +1,7 @@
 # Zeytra | Crypto Market Pulse
 
+![Zeytra Dashboard Preview](./public/dashboard-preview.png)
+
 A high-performance cryptocurrency dashboard designed to track top markets, visualize real-time data, and manage a persistent user watchlist.
 
 ## Tech Stack

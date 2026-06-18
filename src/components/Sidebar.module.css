@@ -136,8 +136,33 @@
   transform: translateY(-2px);
 }
 
+.sidebarOverlay {
+  display: none;
+}
+
 @media (max-width: 1024px) {
+  .sidebarOverlay {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 999;
+  }
+
   .sidebar {
-    display: none; /* Hide on smaller screens for now */
+    position: fixed;
+    top: 0;
+    left: -260px;
+    height: 100vh;
+    z-index: 1000;
+    transition: left var(--transition-fast);
+    box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+  }
+  
+  .sidebar.open {
+    left: 0;
   }
 }
