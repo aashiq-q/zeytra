@@ -28,23 +28,23 @@ export const getMarketData = async (forceRefresh = false): Promise<Coin[]> => {
   try {
     // Fetching top 100 coins with sparkline data for mini charts
     const response = await fetch(`${API_BASE}/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&page=1&sparkline=true`);
-    
+
     if (!response.ok) {
       if (response.status === 429) {
         throw new Error('API Rate Limit Exceeded. Please try again in a minute.');
       }
       throw new Error('Failed to fetch market data');
     }
-    
+
     const data: Coin[] = await response.json();
     CACHE = { data, timestamp: Date.now() };
     return data;
-  } catch (error) {
-    if (!navigator.onLine) {
-      throw new Error('You are currently offline. Please check your internet connection.');
+  } catch (error: any) {
+    if (!navigator.onLine || error.message?.includes('fetch') || error.message?.includes('NetworkError')) {
+      throw new Error("Whoops! You're offline. Please connect to the Internet before the cryptos escape! 🦖🔌");
     }
     if (CACHE && CACHE.data) {
-        return CACHE.data;
+      return CACHE.data;
     }
     throw error;
   }
@@ -85,4 +85,3 @@ export const getGlobalData = async (): Promise<GlobalData | null> => {
     };
   }
 };
-
