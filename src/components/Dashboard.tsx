@@ -54,6 +54,62 @@ export const Dashboard: React.FC<DashboardProps> = ({ activeView, onNavigate }) 
   }, [globalData]);
 
   if (error && coins.length === 0) {
+    const isOffline = error.toLowerCase().includes('offline');
+
+    if (isOffline) {
+      return (
+        <div style={{ 
+          position: 'fixed', 
+          top: 0, left: 0, right: 0, bottom: 0, 
+          backgroundColor: 'var(--bg-color)', 
+          zIndex: 9999, 
+          display: 'flex', 
+          flexDirection: 'column', 
+          alignItems: 'center', 
+          justifyContent: 'center', 
+          textAlign: 'center', 
+          padding: '2rem' 
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', fontSize: '2rem', fontWeight: 800, color: 'var(--text-primary)', marginBottom: '3rem', letterSpacing: '-0.5px' }}>
+            <div style={{ backgroundColor: 'var(--accent)', color: '#000', padding: '0.5rem', borderRadius: '0.75rem', display: 'flex' }}>
+              <TrendingDown size={40} />
+            </div>
+            ZEYTRA
+          </div>
+          
+          <p style={{ 
+            color: 'var(--text-primary)', 
+            maxWidth: '900px', 
+            fontSize: 'clamp(2rem, 5vw, 3.5rem)',
+            fontWeight: 800,
+            lineHeight: 1.2,
+            marginBottom: '3rem'
+          }}>
+            {error}
+          </p>
+          
+          <button 
+            onClick={() => window.location.reload()} 
+            style={{ 
+              background: 'var(--text-primary)', 
+              color: 'var(--bg-color)', 
+              padding: '1rem 2.5rem', 
+              borderRadius: 'var(--radius-full)', 
+              fontWeight: 700, 
+              fontSize: '1.25rem',
+              border: 'none', 
+              cursor: 'pointer',
+              transition: 'transform 0.2s'
+            }}
+            onMouseOver={(e) => e.currentTarget.style.transform = 'translateY(-2px)'}
+            onMouseOut={(e) => e.currentTarget.style.transform = 'translateY(0)'}
+          >
+            Reconnect
+          </button>
+        </div>
+      );
+    }
+
     return (
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '60vh', textAlign: 'center', gap: '1rem' }}>
         <h2 style={{ color: 'var(--danger)', fontSize: '1.5rem', fontWeight: 600 }}>API Error</h2>
